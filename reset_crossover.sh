@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo "==> Closing CrossOver..."
+echo "==> Closing CrossOver and Wine processes..."
 killall "CrossOver" 2>/dev/null || true
+killall -9 wineserver 2>/dev/null || true
+killall -9 wineloader 2>/dev/null || true
+sleep 2
 
 PLIST_PATH="$HOME/Library/Preferences/com.codeweavers.CrossOver.plist"
 if [ -f "$PLIST_PATH" ]; then
@@ -32,7 +35,7 @@ with open(reg_path, 'r', encoding='utf-8', errors='ignore') as f:
     content = f.read()
 
 # Pattern matching the CodeWeavers CXOffice section block until the next section header or end of file
-pattern = r'\[Software\\\\CodeWeavers\\\\CrossOver\\\\CXOffice\][^\[]*'
+pattern = r'\[Software.*CodeWeavers.*CrossOver.*cxoffice\][^\[]*'
 cleaned = re.sub(pattern, '', content)
 
 with open(reg_path, 'w', encoding='utf-8') as f:
